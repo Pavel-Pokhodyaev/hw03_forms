@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <title>{{group.title }}</title>
+</head>
+      <!-- класс py-3 создает отступы сверху и снизу блока -->
+      <div class="container py-3">
+        <h1>{% block title %}{{title }}
+          {% endblock title %}
+          {{ group.title }}</h1>
+        <p>
+          {{ group.description }}
+        </p>
+        {% for post in posts %}
+          <article>
+            <ul>m
+              <li>
+                Автор: {{ post.author.get_full_name }}
+              </li>
+              <li>
+                Дата публикации: {{  post.pub_date|date:"d E Y" }}
+              </li>
+            </ul>      
+            <p>
+              {{ post.text }}
+            </p>         
+          </article>
+          {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+          <!-- под последним постом нет линии -->
+      </div>  
+{% endblock content %}
+  

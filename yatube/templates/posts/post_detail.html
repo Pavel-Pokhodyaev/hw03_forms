@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block content %}
+  <div class="row">
+    <aside class="col-12 col-md-5">
+      <ul>
+        <li class="list-group-item d-flex justify-content-between align-item-center">
+          Дата публикации:<span> {{ post.pub_date|date:"d E Y" }}</span> 
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-item-center">
+          Пост: <span> {{ post.text|truncatechars:30 }} </span>
+        </li>
+          <li class="list-group-item d-flex justify-content-between align-item-center">
+          Группа: <span> {{ group.title }}</span>
+          </li>
+        {% if post.group %}
+        <li class="list-group-item d-flex justify-content-between align-item-center">
+           <a href="{% url 'posts:group_list' post.group.slug %}">
+             Все записи группы
+           </a>
+          </li>
+          {% endif %}
+          <li class="list-group-item d-flex justify-content-between align-item-center">
+          Автор: <span> {{ user.get_full_name }}</span>
+          </li>
+        <li class="list-group-item d-flex justify-content-between align-item-center">
+          Всего постов автора: <span> {{ post.author.posts.count }}</span>
+        </li>
+        <class="list-group-item d-flex justify-content-between align-item-center">
+          <a class="btn btn-primary" href="{% url 'posts:update_post' post.id %}">
+            Редактировать запись
+          </a>
+
+      </aside>
+      <article class="col-12 cal-md-9">
+      </article>
+    </div>
+    {% endblock %}
