@@ -16,7 +16,7 @@
         </p>
         {% for post in posts %}
           <article>
-            <ul>m
+            <ul>
               <li>
                 Автор: {{ post.author.get_full_name }}
               </li>
@@ -26,7 +26,8 @@
             </ul>      
             <p>
               {{ post.text }}
-            </p>         
+            </p>
+            <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>         
           </article>
           {% if not forloop.last %}<hr>{% endif %}
         {% endfor %}

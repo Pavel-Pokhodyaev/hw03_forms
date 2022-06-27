@@ -17,5 +17,8 @@ urlpatterns = [
     #path('about/', include('about.urls', namespace='about'))
     path('create/', views.post_create, name='post_create'),
     # Редактирование поста
-    path('posts/<int:post_id>/edit', views.post_edit, name='update_post'),
+    path('posts/<int:post_id>/edit/', views.post_edit, name='update_post'),
 ]
+
+
+
