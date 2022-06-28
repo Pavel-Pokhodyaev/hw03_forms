@@ -1,12 +1,12 @@
 # posts/views.py
 import imp
+from re import template
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Post, Group, User
 from django.contrib.auth import get_user_model
 from .forms import PostForm
-from django.http import HttpResponseRedirect
 "Главная страница"
 
 User = get_user_model()
@@ -27,12 +27,16 @@ def index(request):
 # Страница с группой
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.order_by('-pub_date')[:10]
+    posts = group.posts.order_by('-pub_date')
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     title = 'Записи сообщества'
     context = {
         'title': title,
         'group': group,
         'posts': posts,
+        'page_obj': page_obj,
     }
     return render(request, 'posts/group_list.html', context)
 

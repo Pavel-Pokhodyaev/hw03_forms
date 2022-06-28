@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <head>
   <meta name="msapplication-TileColor" content="#da532c">
@@ -14,24 +15,27 @@
         <p>
           {{ group.description }}
         </p>
-        {% for post in posts %}
+        {% for post in page_obj %} 
           <article>
             <ul>
               <li>
                 Автор: {{ post.author.get_full_name }}
+                <a href="{% url 'posts:profile' post.author %}">все посты пользователя</a>
               </li>
               <li>
                 Дата публикации: {{  post.pub_date|date:"d E Y" }}
               </li>
-            </ul>      
-            <p>
-              {{ post.text }}
-            </p>
+            </ul>
+            <p>{{ post.text }}</p>
             <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>         
           </article>
           {% if not forloop.last %}<hr>{% endif %}
         {% endfor %}
+      </article>
+      {% include 'posts/includes/paginator.html' %}
           <!-- под последним постом нет линии -->
       </div>  
-{% endblock content %}
+      
+{% endblock %}
+
   

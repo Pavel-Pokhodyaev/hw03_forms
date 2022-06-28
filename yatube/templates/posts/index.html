@@ -12,10 +12,10 @@
       <h1>{% block title %}{{ title }}{% endblock title %}</h1>
       {% for post in page_obj %}
         <article>
-            
               <ul>
                 <li>
-                  Автор: {{ post.author.get_full_name }}
+                  Автор: {{ post.author.get_full_name }}        
+                  <a href="{% url 'posts:profile' post.author %}">все посты пользователя</a> 
                 </li>
                 <li>
                   Дата публикации: {{ post.pub_date|date:"d E Y" }}
@@ -23,15 +23,18 @@
               </ul> 
               <p>{{ post.text }}</p>
               {% if post.group %}   
+              <a href="{% url 'posts:post_detail' post.id %}">подробная информация</a>
+            </article>  
                 <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
               {% endif %}
               {% if not forloop.last %}<hr>{% endif %}
         {% endfor %}
         <h3>
-          <a href="{% url 'posts:profile' user %}">все посты пользователя</a>
+          <a href="{% url 'posts:profile' user %}">все посты {{ user.username }}</a>
          </h3>
-          {% include 'posts/paginator.html' %}
+          {% include 'posts/includes/paginator.html' %}
          </article>
             <!-- под последним постом нет линии -->
      </div>  
+     
 {% endblock  %}
