@@ -1,5 +1,4 @@
 # posts/views.py
-import imp
 from re import template
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -7,7 +6,6 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import Post, Group, User
 from django.contrib.auth import get_user_model
 from .forms import PostForm
-"Главная страница"
 
 User = get_user_model()
 
@@ -17,11 +15,11 @@ def index(request):
     page_number = request.GET.get('page')
     title = 'Последние обновления на сайте'
     page_obj = paginator.get_page(page_number)
+    template = 'posts/index.html'
     context = {
         'title': title,
-        'page_obj': page_obj,
-    }
-    return render(request, 'posts/index.html', context)
+        'page_obj': page_obj,}
+    return render(request, template, context)
 
 @login_required
 # Страница с группой
@@ -36,8 +34,7 @@ def group_posts(request, slug):
         'title': title,
         'group': group,
         'posts': posts,
-        'page_obj': page_obj,
-    }
+        'page_obj': page_obj,}
     return render(request, 'posts/group_list.html', context)
 
 @login_required
@@ -45,7 +42,6 @@ def profile(request, username):
     # Здесь код запроса к модели и создание словаря контекста
     author = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=author)
-    posts_count = author.posts.count()
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -53,8 +49,7 @@ def profile(request, username):
     context = {
         'page_obj' : page_obj,
         'author' : author,
-        'posts_count' : posts_count,
-    }
+        }
     return render(request, template, context)
 
 @login_required
