@@ -1,6 +1,4 @@
 # posts/views.py
-from re import template
-from turtle import title
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
@@ -9,6 +7,7 @@ from django.contrib.auth import get_user_model
 from .forms import PostForm
 
 User = get_user_model()
+
 
 def index(request):
     posts = Post.objects.all().order_by('-pub_date')
@@ -19,8 +18,9 @@ def index(request):
     template = 'posts/index.html'
     context = {
         'title': title,
-        'page_obj': page_obj,}
+        'page_obj': page_obj, }
     return render(request, template, context)
+
 
 # Страница с группой
 def group_posts(request, slug):
@@ -34,7 +34,7 @@ def group_posts(request, slug):
         'title': title,
         'group': group,
         'posts': posts,
-        'page_obj': page_obj,}
+        'page_obj': page_obj, }
     return render(request, 'posts/group_list.html', context)
 
 
@@ -49,9 +49,8 @@ def profile(request, username):
     title = 'Профайл пользователя'
     context = {
         'title': title,
-        'page_obj' : page_obj,
-        'author' : author,
-        }
+        'page_obj': page_obj,
+        'author': author, }
     return render(request, template, context)
 
 
@@ -62,11 +61,12 @@ def post_detail(request, post_id):
     author = post.author
     template = 'posts/post_detail.html'
     context = {
-        'author' : author,
-        'post' : post,
-        'group' : group,
+        'author': author,
+        'post': post,
+        'group': group,
     }
     return render(request, template, context)
+
 
 @login_required
 def post_create(request):
@@ -82,6 +82,7 @@ def post_create(request):
     form = PostForm()
 
     return render(request, 'posts/create_post.html', {'form': form})
+
 
 @login_required
 def post_edit(request, post_id):
