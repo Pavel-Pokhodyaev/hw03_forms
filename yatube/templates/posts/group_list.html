@@ -9,9 +9,8 @@
 </head>
       <!-- класс py-3 создает отступы сверху и снизу блока -->
       <div class="container py-3">
-        <h1>{% block title %}{{title }}
-          {% endblock title %}
-          {{ group.title }}</h1>
+        <h1>{% block title %}{{group.title }}
+          {% endblock title %}</h1>
         <p>
           {{ group.description }}
         </p>

@@ -1,5 +1,6 @@
 # posts/views.py
 from re import template
+from turtle import title
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
@@ -21,7 +22,6 @@ def index(request):
         'page_obj': page_obj,}
     return render(request, template, context)
 
-@login_required
 # Страница с группой
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
@@ -37,7 +37,7 @@ def group_posts(request, slug):
         'page_obj': page_obj,}
     return render(request, 'posts/group_list.html', context)
 
-@login_required
+
 def profile(request, username):
     # Здесь код запроса к модели и создание словаря контекста
     author = get_object_or_404(User, username=username)
@@ -46,24 +46,27 @@ def profile(request, username):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     template = 'posts/profile.html'
+    title = 'Профайл пользователя'
     context = {
+        'title': title,
         'page_obj' : page_obj,
         'author' : author,
         }
     return render(request, template, context)
 
-@login_required
+
 def post_detail(request, post_id):
     # Здесь код запроса к модели и создание словаря контекста
     post = get_object_or_404(Post, pk=post_id)
     group = post.group
     author = post.author
+    template = 'posts/post_detail.html'
     context = {
         'author' : author,
         'post' : post,
         'group' : group,
     }
-    return render(request, 'posts/post_detail.html', context)
+    return render(request, template, context)
 
 @login_required
 def post_create(request):
