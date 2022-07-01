@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-# Create your models here.
-
 
 User = get_user_model()
 
@@ -31,6 +29,8 @@ class Post(models.Model):
         on_delete=models.SET_NULL,
         related_name='posts')
 
+    class Meta:
+        ordering = ['-pub_date']
+
     def __str__(self):
-        # выводим текст поста
         return self.text

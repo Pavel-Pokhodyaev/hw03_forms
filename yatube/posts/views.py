@@ -8,10 +8,11 @@ from .forms import PostForm
 
 User = get_user_model()
 
+POST_CONST = 10
 
 def index(request):
-    posts = Post.objects.all().order_by('-pub_date')
-    paginator = Paginator(posts, 10)
+    posts = Post.objects.all()
+    paginator = Paginator(posts, POST_CONST)
     page_number = request.GET.get('page')
     title = 'Последние обновления на сайте'
     page_obj = paginator.get_page(page_number)
@@ -26,7 +27,7 @@ def index(request):
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     posts = group.posts.order_by('-pub_date')
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, POST_CONST)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     title = 'Записи сообщества'
