@@ -10,6 +10,7 @@ User = get_user_model()
 
 POST_CONST = 10
 
+
 def index(request):
     posts = Post.objects.all()
     paginator = Paginator(posts, POST_CONST)
