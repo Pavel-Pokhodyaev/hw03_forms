@@ -39,7 +39,6 @@ class UsersURLTests(TestCase):
     def test_pages_for_all_users(self):
         """Проверка  доступа к страницам входа и регистрации."""
         pages = ['/auth/login/', '/auth/signup/', '/',
-                '/about/author/', '/about/tech/',
                 '/auth/logout/', '/group/test-slug/']
         for page in pages:
             with self.subTest(page=page):
@@ -58,20 +57,21 @@ class UsersURLTests(TestCase):
 
     # Проверяем редиректы для неавторизованного пользователя
     def test_post_detail_url_redirect_anonymous(self):
-        """Страница /posts/45/edit/ перенаправляет анонимного
+        """Страница /posts/{post_id}/edit/ перенаправляет анонимного
         пользователя выдавая код 302.
         """
-        response = self.guest_client.get('/posts/45/edit/')
+        post_id = self.post.id
+        response = self.guest_client.get(f'/posts/{post_id}/edit/')
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_post_detail_url_redirect_anonymous_on_admin_login(self):
-        """Страница по адресу /posts/45/edit/ перенаправит анонимного
+        """Страница по адресу /posts/{post_id}/edit/ перенаправит анонимного
         пользователя на страницу логина.
         """
-        #post_id = self.post.id
-        response = self.client.get('/posts/44/edit/', follow=True)
+        post_id = self.post.id
+        response = self.client.get(f'/posts/{post_id}/edit/', follow=True)
         self.assertRedirects(
-            response, ('/auth/login/?next=/posts/44/edit/'))
+            response, (f'/auth/login/?next=/posts/{post_id}/edit/'))
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
