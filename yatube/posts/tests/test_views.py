@@ -7,7 +7,8 @@ from posts.models import Group, Post
 User = get_user_model()
 
 
-class UsersURLTests(TestCase):
+class TaskPagesTests(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -59,3 +60,15 @@ class UsersURLTests(TestCase):
                 response = self.authorized_client.get(name)
                 self.assertTemplateUsed(response, template,
                                         f'Ошибка html-шаблона при вызове {name}')
+
+    def test_about_page_uses_correct(self):
+        
+        """URL-адрес использует шаблон posts/create_post.html."""
+        response = self.authorized_client.get(reverse('posts:create_post'))
+        self.assertTemplateUsed(response, 'posts/create_post.html')
+
+    def test_about_page_uses_correct2(self):
+        post_id = self.post.id
+        """URL-адрес использует шаблон posts/create_post.html."""
+        response = self.authorized_client.get(reverse('posts:index'))
+        self.assertTemplateUsed(response, 'posts/index.html')

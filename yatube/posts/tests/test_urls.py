@@ -9,6 +9,7 @@ User = get_user_model()
 
 
 class UsersURLTests(TestCase):
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -89,3 +90,4 @@ class UsersURLTests(TestCase):
                 response = self.authorized_client.get(url)
                 self.assertTemplateUsed(response, template,
                                         f'Ошибка шаблона post при вызове {url}')
+

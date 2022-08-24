@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+
 from ..models import Group, Post
 
 User = get_user_model()
@@ -26,6 +27,7 @@ class PostModelTest(TestCase):
         """Проверяем, что у моделей корректно работает __str__."""
         models_str = {PostModelTest.post: PostModelTest.post.text[:15],
                       PostModelTest.group: PostModelTest.group.title}
+        # Тестом по циклу subTest()
         for model, expected_values in models_str.items():
             with self.subTest(model=model):
                 self.assertEqual(model.__str__(), expected_values,

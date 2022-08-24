@@ -31,3 +31,4 @@ class StaticPagesURLTests(TestCase):
                 response = self.guest_client.get(url)
                 self.assertTemplateUsed(response, template,
                                         f'Ошибка шаблона post при вызове {url}')
+
