@@ -34,7 +34,7 @@
         Пост: <span> {{ post.text|truncatechars:1000 }} </span>
         </p>
       <class="list-group-item d-flex justify-content-between align-item-center">
-        <a class="btn btn-primary" href="{% url 'posts:update_post' post.id %}">
+        <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">
           Редактировать запись
         </a>
       </article>
