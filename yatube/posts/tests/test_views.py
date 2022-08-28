@@ -1,11 +1,12 @@
+from asyncio import sleep
+from datetime import date
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from posts.models import Group, Post
+from django import forms
+from posts.models import Group, Post, User
 
 User = get_user_model()
-
 
 class TaskPagesTests(TestCase):
 
@@ -19,16 +20,26 @@ class TaskPagesTests(TestCase):
             slug='test-slug',
             description='Тестовое описание',
         )
-        cls.post = Post.objects.create(
-            author=cls.user,
-            text='Тестовый пост',
-            group=cls.group,
-        )
+
+        for i in range(15, 0, -1):
+            Post.objects.create(
+                text = f'{i} numder post',
+                author = cls.user,
+                group = cls.group
+                )
+            sleep(1E-6)
+
+
+       # cls.post = Post.objects.create(
+            #text = f'Тестовый пост2',
+            #author = cls.user,
+            #pub_date = date.today(),
+            #group = cls.group
+            #)
 
     def setUp(self):
         # Создаем авторизованный клиент
         self.guest_client = Client()
-        self.user = User.objects.create_user(username='StasBasov')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
@@ -37,19 +48,17 @@ class TaskPagesTests(TestCase):
 
         name_templates = {
             reverse('posts:profile',
-                kwargs={'username': 'StasBasov'}
+                kwargs={'username': 'auth'}
                 ): 'posts/profile.html',
             reverse('posts:post_detail',
                 kwargs={'post_id': self.post.id}
                 ): 'posts/post_detail.html',
-
             reverse('posts:post_edit',
                 kwargs={'post_id': self.post.id}
                 ): 'posts/create_post.html',
-                
             reverse('posts:index'
                 ): 'posts/index.html',
-            reverse('posts:post_create'
+            reverse('posts:create_post', 
                 ): 'posts/create_post.html',
             reverse('posts:group_list',
                 kwargs={'slug': self.group.slug}
@@ -61,14 +70,13 @@ class TaskPagesTests(TestCase):
                 self.assertTemplateUsed(response, template,
                                         f'Ошибка html-шаблона при вызове {name}')
 
-    def test_about_page_uses_correct(self):
-        
-        """URL-адрес использует шаблон posts/create_post.html."""
-        response = self.authorized_client.get(reverse('posts:create_post'))
-        self.assertTemplateUsed(response, 'posts/create_post.html')
-
-    def test_about_page_uses_correct2(self):
-        post_id = self.post.id
-        """URL-адрес использует шаблон posts/create_post.html."""
+# Проверка словаря контекста главной страницы (в нём передаётся форма)
+    def test_home_page_show_correct_context(self):
+        """Шаблон home сформирован с правильным контекстом."""
         response = self.authorized_client.get(reverse('posts:index'))
-        self.assertTemplateUsed(response, 'posts/index.html')
+        post = context['page'][0]
+        self.assertEqual(post.author, TaskPagesTests.user)
+        self.assertEqual(post.pub_date, TaskPagesTests.post.pub_date)
+        self.assertEqual(post.text, TaskPagesTests.post.text)
+        self.assertEqual(post.group, TaskPagesTests.post.group)
+
